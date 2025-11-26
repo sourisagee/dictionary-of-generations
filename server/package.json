@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@elbrus/eslint-config": "^1.1.0",
+    "@elbrus/eslint-plugin": "^1.0.1",
+    "@eslint/js": "^9.39.1",
+    "@eslint/json": "^0.14.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
