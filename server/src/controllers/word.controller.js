@@ -82,7 +82,7 @@ class WordController {
   static async updateWordCard(req, res) {
     const { id } = req.params;
 
-    if (isNaN(+id)) {
+    if (Number.isNaN(+id)) {
       res.status(400).json(formatResponse(400, 'Неверный формат ID'));
       return;
     }
