@@ -51,7 +51,7 @@ class WordController {
         user_id: userId,
       });
 
-       res.status(201).json(formatResponse(201, 'Слово успешно создано', newWord));
+      res.status(201).json(formatResponse(201, 'Слово успешно создано', newWord));
     } catch (error) {
       res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
     }
@@ -73,7 +73,7 @@ class WordController {
         return;
       }
 
-       res.status(200).json(formatResponse(200, 'Слово получено', word));
+      res.status(200).json(formatResponse(200, 'Слово получено', word));
     } catch (error) {
       res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
     }
@@ -119,9 +119,7 @@ class WordController {
         return;
       }
 
-      res
-        .status(200)
-        .json(formatResponse(200, 'Данные слова обновлены', updatedWord));
+      res.status(200).json(formatResponse(200, 'Данные слова обновлены', updatedWord));
     } catch (error) {
       res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
     }
@@ -142,7 +140,7 @@ class WordController {
         return;
       }
 
-       res.status(200).json(formatResponse(200, 'Слово успешно удален'));
+      res.status(200).json(formatResponse(200, 'Слово успешно удален'));
     } catch (error) {
       res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
     }
@@ -169,7 +167,7 @@ class WordController {
         return;
       }
 
-       res.status(200).json(formatResponse(200, 'Лайки слова получены', likes));
+      res.status(200).json(formatResponse(200, 'Лайки слова получены', likes));
     } catch (error) {
       res
         .status(500)
@@ -179,9 +177,11 @@ class WordController {
 
   static async putOrRemoveLikeIfExists(req, res) {
     const { wordId } = req.params;
+    console.log(wordId);
 
     //  пользователь сохраняется в req.user после аутентификации
-    const userId = req.user?.id;
+    const userId = res.locals.user.id;
+    console.log(userId);
 
     if (Number.isNaN(+wordId)) {
       res.status(400).json(formatResponse(400, 'Неверный формат ID слова'));
@@ -201,7 +201,7 @@ class WordController {
           .status(200)
           .json(formatResponse(200, 'Лайк успешно удален', { liked: false }));
       }
-       res.status(201).json(
+      res.status(201).json(
         formatResponse(201, 'Лайк успешно поставлен', {
           liked: true,
           like: result.like,

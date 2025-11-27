@@ -26,6 +26,8 @@ export default function WordCard({ wordCard, user }) {
     setLikes(response.data.data.length);
   };
 
+  console.log(user);
+
   return (
     <Card style={{ width: '18rem' }} className="h-100 w-100">
       <Card.Body className="d-flex flex-column">
@@ -46,7 +48,6 @@ export default function WordCard({ wordCard, user }) {
             <strong>Пример:</strong> {wordCard.example}
           </Card.Text>
         </div>
-
         {user && (
           <Button variant="primary" onClick={handleLike} className="mt-3">
             Лайкнуть! <br />

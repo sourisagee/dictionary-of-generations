@@ -1,5 +1,6 @@
 const wordRouter = require('express').Router();
 const WordController = require('../controllers/word.controller');
+const verifyAccessToken = require('../middleware/verifyAccessToken');
 
 wordRouter
   .route('/')
@@ -17,6 +18,6 @@ wordRouter
 wordRouter
   .route('/likes/:wordId')
   .get(WordController.getAllWordCardLikes) // все лайки одной карточки с словом
-  .post(WordController.putOrRemoveLikeIfExists); // создать новую запись лайка или убрать лайк
+  .post(verifyAccessToken, WordController.putOrRemoveLikeIfExists); // создать новую запись лайка или убрать лайк
 
 module.exports = wordRouter;
