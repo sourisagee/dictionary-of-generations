@@ -12,10 +12,11 @@ wordRouter
   .put(WordController.updateWordCard) // изменить карточку (обновить)
   .delete(WordController.deleteWordCard); // удалить карточку
 
-wordRouter.route('/likes').get(WordController.getAllWordCardLikes); // все лайки одной карточки с словом
+// wordRouter.route('/likes').get(WordController.getAllWordCardLikes); // все лайки одной карточки с словом
 
 wordRouter
   .route('/likes/:wordId')
-  .post(WordController.putOrRemoveLikeIfExists) // создать новую запись лайка или убрать лайк
+  .get(WordController.getAllWordCardLikes) // все лайки одной карточки с словом
+  .post(WordController.putOrRemoveLikeIfExists); // создать новую запись лайка или убрать лайк
 
 module.exports = wordRouter;
