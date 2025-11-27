@@ -1,4 +1,5 @@
 'use strict';
+
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Word extends Model {
@@ -9,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'word_id',
         as: 'likedByUsers',
       }); // много слов могут быть лайкнуты многими пользователями
+      this.hasMany(Like, { foreignKey: 'word_id', as: 'likes' }); // у слова может быть много лайков
     }
   }
   Word.init(
