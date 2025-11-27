@@ -16,7 +16,6 @@ wordRouter.route('/likes').get(WordController.getAllWordCardLikes); // все л
 
 wordRouter
   .route('/likes/:wordId')
-  .post(WordController.createNewLike) // создать новую запись лайка
-  .delete(WordController.removeLike); // убрать лайк
+  .post(WordController.putOrRemoveLikeIfExists) // создать новую запись лайка или убрать лайк
 
 module.exports = wordRouter;
