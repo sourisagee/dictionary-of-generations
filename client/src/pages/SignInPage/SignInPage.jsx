@@ -1,5 +1,9 @@
-export default function SignInPage() {
+import SignInForm from '../../features/SignInForm/SignInForm';
+
+export default function SignInPage({ setUser }) {
   return (
-    <div>SignInPage</div>
-  )
+    <>
+      <SignInForm setUser={setUser} />
+    </>
+  );
 }

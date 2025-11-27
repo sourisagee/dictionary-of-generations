@@ -9,8 +9,10 @@ class UserService {
     return (await User.findOne({ where: { email } }))?.get();
   }
 
-  static async createUser(data) {
-    return (await User.create(data))?.get();
+  static async createUser({ name, email, password }) {
+    console.log({ name, email, password }, '>>>>>>>>>>>');
+    
+    return (await User.create({ name, email, password }))?.get();
   }
 
   static async getUserLikes(userId) {
