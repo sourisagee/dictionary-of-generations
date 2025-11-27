@@ -80,14 +80,14 @@ class WordService {
 
   static async putOrRemoveLikeIfExists(userId, wordId) {
     try {
-      const like = await Like.findOne({ where: { userId, wordId } });
+      const like = await Like.findOne({ where: { user_id: userId, word_id: wordId } });
 
       if (like) {
         await like.destroy();
         return { message: 'Like successfully deleted' };
       }
 
-      const newLike = await Like.create({ userId, wordId });
+      const newLike = await Like.create({ user_id: userId, word_id: wordId });
 
       return newLike;
     } catch (error) {

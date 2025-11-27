@@ -28,7 +28,7 @@ export default function MainPage({ user }) {
             {wordCards.map((wordCard) => {
               return (
                 <Col key={wordCard.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                  <WordCard wordCard={wordCard} />
+                  <WordCard wordCard={wordCard} user={user} />
                 </Col>
               );
             })}
