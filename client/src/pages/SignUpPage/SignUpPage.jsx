@@ -1,5 +1,5 @@
-export default function AuthPage() {
+export default function SignUpPage() {
   return (
-    <div>AuthPage</div>
+    <div>SignUpPage</div>
   )
 }
