@@ -9,61 +9,63 @@ const formatResponse = require('../utils/formatResponse');
 
 class UserController {
   static async refreshTokens(req, res) {
-    try {
-      const { refreshToken } = req.cookies;
-      const { user } = jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN);
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-        generateJWTTokens({ user });
-      return res
-        .status(200)
-        .cookie('refreshToken', newRefreshToken, cookieConfig)
-        .json(
-          formatResponse(200, 'User session successfully extended', {
-            user,
-            accessToken: newAccessToken,
-          }),
-        );
-    } catch ({ message }) {
-      res
-        .status(401)
-        .clearCookie('refreshToken')
-        .json(formatResponse(401, 'Invalid refresh token', null, message));
+        try {
+            const { refreshToken } = req.cookies;
+            const { user } = jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN);
+            const { accessToken: newAccessToken, refreshToken: newRefreshToken } = generateJWTTokens({ user });
+
+            return res
+                .status(200)
+                .cookie('refreshToken', newRefreshToken, cookieConfig)
+                .json(formatResponse(200, 'User session successfully extended', { user, accessToken: newAccessToken }));
+        } catch ({ message }) {
+            return res
+                .status(401)
+                .clearCookie('refreshToken')
+                .json(formatResponse(401, 'Invalid refresh token', null, message));
+        }
     }
-  }
 
   static async signUp(req, res) {
     const { email, name, password } = req.body;
-    const { isValid, error } = User.validateSignUpData({ email, name, password });
-    if (!isValid) {
-      return res.status(400).json(formatResponse(400, 'Validation error', null, error));
-    }
+    //  console.log(email, name, password, '<<<<<<<<<<<<<<');
+
+    console.log(req.body, '>>>>>>>>>>');
+    
+     
+    // const { isValid, error } = User.validateSignUpData({ email, name, password });
+    // if (!isValid) {
+    //   return res.status(400).json(formatResponse(400, 'Validation error', null, error));
+    // }
     try {
-      const userFound = await UserService.getUserbyEmail(email.toLowerCase());
-      if (userFound.email) {
-        return res
-          .status(400)
-          .json(
-            formatResponse(
-              400,
-              'User with this email already exists',
-              null,
-              'User with this email already exists',
-            ),
-          );
-      }
+      // const userFound = await UserService.getUserbyEmail(email.toLowerCase());
+      // if (userFound.email) {
+      //   return res
+      //     .status(400)
+      //     .json(
+      //       formatResponse(
+      //         400,
+      //         'User with this email already exists',
+      //         null,
+      //         'User with this email already exists',
+      //       ),
+      //     );
+      // }
       const newUser = await UserService.createUser({ email, name, password });
-      if (!newUser) {
-        return res
-          .status(500)
-          .json(
-            formatResponse(
-              500,
-              'Failed to create new user',
-              null,
-              'Failed to create new user',
-            ),
-          );
-      }
+
+      // const newUser = await User.create({ email, name, password })
+      // if (!newUser) {
+      //   return res
+      //     .status(500)
+      //     .json(
+      //       formatResponse(
+      //         500,
+      //         'Failed to create new user',
+      //         null,
+      //         'Failed to create new user',
+      //       ),
+      //     );
+      // }
       const { accessToken, refreshToken } = generateJWTTokens({ user: newUser });
       return res
         .status(201)

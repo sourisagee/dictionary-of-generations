@@ -1,5 +1,9 @@
-export default function SignUpPage() {
+import SignUpForm from '../../features/SignUpForm/SignUpForm';
+
+export default function SignUpPage({ setUser }) {
   return (
-    <div>SignUpPage</div>
-  )
+    <>
+      <SignUpForm setUser={setUser} />
+    </>
+  );
 }
