@@ -33,6 +33,23 @@ export default function NavBar({ onLogout, user }) {
       </Navbar>
     );
 
+  // если мы на корневой странице (и пользователь авторизован)
+  if (location.pathname === '/')
+    return (
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand onClick={() => navigate('/main')}>Главная</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav>
+              <Nav.Link onClick={() => navigate(`/account/${user.id}`)}>Профиль</Nav.Link>
+              <Nav.Link onClick={handleLogout}>Выход</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    );
+
   // если мы находимся на главной странице
   if (location.pathname.startsWith('/main'))
     return (
