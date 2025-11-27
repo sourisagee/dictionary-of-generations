@@ -14,9 +14,7 @@ class WordController {
 
   static async getAllWordCardLikes(req, res) {}
 
-  static async createNewLike(req, res) {}
-
-  static async removeLike(req, res) {}
+  static async putOrRemoveLikeIfExists(req, res) {}
 }
 
 module.exports = WordController;
