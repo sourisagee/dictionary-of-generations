@@ -20,4 +20,8 @@ wordRouter
   .get(WordController.getAllWordCardLikes) // все лайки одной карточки с словом
   .post(verifyAccessToken, WordController.putOrRemoveLikeIfExists); // создать новую запись лайка или убрать лайк
 
+  wordRouter
+  .route('/category/:category')
+  .get(WordController.getAllWordByCategory)
+
 module.exports = wordRouter;

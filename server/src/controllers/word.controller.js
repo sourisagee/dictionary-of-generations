@@ -177,7 +177,6 @@ class WordController {
 
   static async putOrRemoveLikeIfExists(req, res) {
     const { wordId } = req.params;
-    console.log(wordId);
 
     //  пользователь сохраняется в req.user после аутентификации
     const userId = res.locals.user.id;
@@ -207,6 +206,18 @@ class WordController {
           like: result.like,
         }),
       );
+    } catch (error) {
+      res
+        .status(500)
+        .json(formatResponse(500, 'Ошибка сервера при работе с лайком', null, error));
+    }
+  }
+
+  static async getAllWordByCategory(req, res) {
+    const { category } = req.params;
+    try {
+      const words = await WordService.getAllWordByCategory(category);
+      res.status(200).json(formatResponse(200, 'Слова катерии получены', words));
     } catch (error) {
       res
         .status(500)
