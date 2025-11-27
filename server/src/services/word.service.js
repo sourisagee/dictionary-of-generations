@@ -41,7 +41,7 @@ class WordService {
     try {
       const cardToUpdate = await Word.findByPk(wordId);
 
-      cardToUpdate.update({ word, definition, category, example });
+      await cardToUpdate.update({ word, definition, category, example });
 
       return cardToUpdate.get();
     } catch (error) {
@@ -53,9 +53,9 @@ class WordService {
     try {
       const wordCardToDelete = await Word.findByPk(wordId);
 
-      wordCardToDelete.destroy();
+      await wordCardToDelete.destroy();
 
-      return console.log('Word card successfully deleted');
+      return { message: 'Word card successfully deleted' };
     } catch (error) {
       return error.message;
     }
@@ -82,9 +82,14 @@ class WordService {
     try {
       const like = await Like.findOne({ where: { userId, wordId } });
 
-      if (like) return like.destroy();
+      if (like) {
+        await like.destroy();
+        return { message: 'Like successfully deleted' };
+      }
 
-      return Like.create({ userId, wordId });
+      const newLike = await Like.create({ userId, wordId });
+
+      return newLike;
     } catch (error) {
       return error.message;
     }
