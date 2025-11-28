@@ -183,31 +183,29 @@ class WordController {
     console.log(userId);
 
     if (Number.isNaN(+wordId)) {
-      res.status(400).json(formatResponse(400, 'Неверный формат ID слова'));
-      return;
+      return res.status(400).json(formatResponse(400, 'Неверный формат ID слова'));
     }
 
     if (!userId) {
-      res.status(401).json(formatResponse(401, 'Пользователь не авторизован'));
-      return;
+      return res.status(401).json(formatResponse(401, 'Пользователь не авторизован'));
     }
 
     try {
       const result = await WordService.putOrRemoveLikeIfExists(+userId, +wordId);
 
       if (result.action === 'removed') {
-        res
+        return res
           .status(200)
           .json(formatResponse(200, 'Лайк успешно удален', { liked: false }));
       }
-      res.status(201).json(
+      return res.status(201).json(
         formatResponse(201, 'Лайк успешно поставлен', {
           liked: true,
           like: result.like,
         }),
       );
     } catch (error) {
-      res
+      return res
         .status(500)
         .json(formatResponse(500, 'Ошибка сервера при работе с лайком', null, error));
     }

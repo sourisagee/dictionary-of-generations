@@ -7,28 +7,42 @@ import Col from 'react-bootstrap/Col';
 
 export default function MainPage({ user }) {
   const [wordCards, setWordCards] = useState([]);
-  // const [hasLiked, setHasLiked] = useState(false)
+  // const [sortedWordCards, setSortedWordCards] = useState([]);
+  // // const [hasLiked, setHasLiked] = useState(false)
 
   useEffect(() => {
-    async function getWordCards() {
+    async function loadWordCards() {
       const response = await axiosInstance.get('/words');
-      console.log('Response data:', response.data);
-
       setWordCards(response.data.data);
-    }
+      // const words = response.data.data;
 
-    getWordCards();
+      // setSortedWordCards(sortedWords);
+    }
+    // refreshData();
+    loadWordCards();
   }, []);
+
+  const updateLike = async (wordId, change) => {
+    setWordCards((prev) =>
+      prev.map((wordCard) =>
+        wordCards.id === wordCards.id
+          ? { ...wordCard, like: wordCard.like + change }
+          : wordCard,
+      ),
+    );
+  };
+
+  const sortedWordCards = [...wordCards].sort((a, b) => b.like - a.like);
 
   return (
     <>
       {user && (
         <Container className="mt-4">
           <Row className="justify-content-center">
-            {wordCards.map((wordCard) => {
+            {sortedWordCards.map((wordCard) => {
               return (
                 <Col key={wordCard.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                  <WordCard wordCard={wordCard} user={user} />
+                  <WordCard wordCard={wordCard} user={user} onLike={updateLike} />
                 </Col>
               );
             })}

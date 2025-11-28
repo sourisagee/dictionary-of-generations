@@ -3,30 +3,33 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { axiosInstance } from '../shared/lib/axiosInstance';
 
-export default function WordCard({ wordCard, user }) {
-  const [likes, setLikes] = useState(0);
+export default function WordCard({ wordCard, user, onLike }) {
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    async function getCardLikes() {
+    async function checkIfLiked() {
+      if (!user) return;
+
       const response = await axiosInstance.get(`/words/likes/${wordCard.id}`);
+      const userLikes = response.data.data.filter((like) => like.user_id === user.id);
 
-      console.log(response);
-
-      setLikes(response.data.data.length || 0);
+      setHasLiked(userLikes.length > 0);
     }
 
-    getCardLikes();
-  }, [wordCard.id]);
+    checkIfLiked();
+  }, [wordCard.id, user]);
 
   const handleLike = async () => {
     await axiosInstance.post(`/words/likes/${wordCard.id}`);
 
-    const response = await axiosInstance.get(`/words/likes/${wordCard.id}`);
-
-    setLikes(response.data.data.length);
+    if (hasLiked) {
+      setHasLiked(false);
+      onLike(wordCard.id, -1);
+    } else {
+      setHasLiked(true);
+      onLike(wordCard.id, 1);
+    }
   };
-
-  console.log(user);
 
   return (
     <Card style={{ width: '18rem' }} className="h-100 w-100">
@@ -49,9 +52,13 @@ export default function WordCard({ wordCard, user }) {
           </Card.Text>
         </div>
         {user && (
-          <Button variant="primary" onClick={handleLike} className="mt-3">
-            Лайкнуть! <br />
-            Уже понравилось: {likes}
+          <Button
+            variant={hasLiked ? 'outline-primary' : 'primary'}
+            onClick={handleLike}
+            className="mt-3"
+          >
+            {hasLiked ? 'Убрать лайк' : 'Лайкнуть!'} <br />
+            Уже понравилось: {wordCard.like}
           </Button>
         )}
       </Card.Body>

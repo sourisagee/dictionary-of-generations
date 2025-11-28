@@ -81,13 +81,21 @@ class WordService {
   static async putOrRemoveLikeIfExists(userId, wordId) {
     try {
       const like = await Like.findOne({ where: { user_id: userId, word_id: wordId } });
+      const word = await Word.findByPk(wordId);
 
       if (like) {
         await like.destroy();
+        await word.update({
+          like: Math.max(0, (word.like || 0) - 1),
+        });
+
         return { message: 'Like successfully deleted' };
       }
 
       const newLike = await Like.create({ user_id: userId, word_id: wordId });
+      await word.update({
+        like: (word.like || 0) + 1,
+      });
 
       return newLike;
     } catch (error) {
@@ -98,7 +106,6 @@ class WordService {
   static async getAllWordByCategory(category) {
     try {
       return await Word.findAll({ where: { category } });
- 
     } catch (error) {
       return error.message;
     }
