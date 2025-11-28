@@ -94,6 +94,15 @@ class WordService {
       return error.message;
     }
   }
+
+  static async getAllWordByCategory(category) {
+    try {
+      return await Word.findAll({ where: { category } });
+ 
+    } catch (error) {
+      return error.message;
+    }
+  }
 }
 
 module.exports = WordService;
