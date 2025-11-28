@@ -5,13 +5,15 @@ const verifyAccessToken = require('../middleware/verifyAccessToken');
 wordRouter
   .route('/')
   .get(WordController.getAllWordCards) // получить все карточки с словами
-  .post(WordController.createWordCard); // создать карточку
+  
+
 
 wordRouter
   .route('/:wordId')
   .get(WordController.getWordCardById) // получить карточку одного слова по айди
   .put(WordController.updateWordCard) // изменить карточку (обновить)
-  .delete(WordController.deleteWordCard); // удалить карточку
+  .delete(WordController.deleteWordCard) // удалить карточку
+  .post(verifyAccessToken, WordController.createWordCard); // создать карточку
 
 // wordRouter.route('/likes').get(WordController.getAllWordCardLikes); // все лайки одной карточки с словом
 
