@@ -10,24 +10,32 @@ export default function WordCard({ wordCard, user, onLike }) {
     async function checkIfLiked() {
       if (!user) return;
 
-      const response = await axiosInstance.get(`/words/likes/${wordCard.id}`);
-      const userLikes = response.data.data.filter((like) => like.user_id === user.id);
+      try {
+        const response = await axiosInstance.get(`/words/likes/${wordCard.id}`);
+        const userLikes = response.data.data.filter((like) => like.user_id === user.id);
 
-      setHasLiked(userLikes.length > 0);
+        setHasLiked(userLikes.length > 0);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     checkIfLiked();
   }, [wordCard.id, user]);
 
   const handleLike = async () => {
-    await axiosInstance.post(`/words/likes/${wordCard.id}`);
+    try {
+      await axiosInstance.post(`/words/likes/${wordCard.id}`);
 
-    if (hasLiked) {
-      setHasLiked(false);
-      onLike(wordCard.id, -1);
-    } else {
-      setHasLiked(true);
-      onLike(wordCard.id, 1);
+      if (hasLiked) {
+        setHasLiked(false);
+        onLike(wordCard.id, -1);
+      } else {
+        setHasLiked(true);
+        onLike(wordCard.id, 1);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

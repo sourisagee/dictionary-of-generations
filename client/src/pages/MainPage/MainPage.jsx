@@ -12,8 +12,12 @@ export default function MainPage({ user }) {
 
   useEffect(() => {
     async function loadWordCards() {
-      const response = await axiosInstance.get('/words');
-      setWordCards(response.data.data);
+      try {
+        const response = await axiosInstance.get('/words');
+        setWordCards(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     loadWordCards();
