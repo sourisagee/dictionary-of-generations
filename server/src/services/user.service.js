@@ -10,7 +10,7 @@ class UserService {
   }
 
   static async createUser({ name, email, password }) {
-    console.log({ name, email, password }, '>>>>>>>>>>>');
+    // console.log({ name, email, password }, '>>>>>>>>>>>');
     
     return (await User.create({ name, email, password }))?.get();
   }
@@ -24,6 +24,20 @@ class UserService {
   static async getAllWordByLikes(wordId) {
     const words = await Word.findAll({ where: {id: wordId}})  // получили все слова  по id
     return words
+  }
+
+    static async getAllWordLikedByUser(userId) {
+    try {
+      const user = await User.findByPk(userId, {
+        include: {
+          model: Word,
+          as: 'words',
+        },
+      });
+      return user ? user.words : [];
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

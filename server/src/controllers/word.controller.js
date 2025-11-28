@@ -19,7 +19,7 @@ class WordController {
   static async createWordCard(req, res) {
     const { word, definition, category, example } = req.body;
 
-    const { userId } = req.params;
+    const userId = req.params.wordId;
 
     if (!word || typeof word !== 'string' || word.trim().length === 0) {
       res.status(400).json(formatResponse(400, 'Необходимо ввести слово'));
@@ -48,7 +48,7 @@ class WordController {
         category,
         example,
         like: 0,
-        user_id: userId,
+        userId,
       });
 
       res.status(201).json(formatResponse(201, 'Слово успешно создано', newWord));

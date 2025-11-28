@@ -149,6 +149,25 @@ class UserController {
       res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
     }
   }
+
+  static async getAllWordLikedByUser(req, res) {
+    const { userId } = req.params;
+    try {
+      const allWordByLike = await UserService.getAllWordLikedByUser(userId);
+      if (!allWordByLike) {
+        res.status(200).json(formatResponse(200, 'Лайкнутые слова не найдены', []));
+        return;
+      }
+
+      res
+        .status(200)
+        .json(
+          formatResponse(200, 'Слова пользователя с лайками получены', allWordByLike),
+        );
+    } catch (error) {
+      res.status(500).json(formatResponse(500, 'Ошибка сервера', null, error));
+    }
+  }
 }
 
 module.exports = UserController;

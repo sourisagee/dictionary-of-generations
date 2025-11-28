@@ -1,4 +1,4 @@
-const { Word, Like } = require('../db/models'); // на всякий случай пока подтянула все модели
+const { User, Word, Like } = require('../db/models'); // на всякий случай пока подтянула все модели
 
 class WordService {
   static async getAllWordCards() {
@@ -10,7 +10,7 @@ class WordService {
     }
   }
 
-  static async createWordCard(userId, { word, definition, category, example }) {
+  static async createWordCard({ userId, word, definition, category, example }) {
     try {
       const newWordCard = await Word.create({
         word,
@@ -23,6 +23,8 @@ class WordService {
 
       return newWordCard.get();
     } catch (error) {
+      console.log(error);
+
       return error.message;
     }
   }
@@ -110,6 +112,8 @@ class WordService {
       return error.message;
     }
   }
+
+
 }
 
 module.exports = WordService;
