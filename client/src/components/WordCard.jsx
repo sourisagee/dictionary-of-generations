@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { axiosInstance } from '../shared/lib/axiosInstance';
 
-export default function WordCard({ wordCard, user, onLike }) {
+export default function WordCard({ wordCard, user, updateLike }) {
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
@@ -29,10 +29,10 @@ export default function WordCard({ wordCard, user, onLike }) {
 
       if (hasLiked) {
         setHasLiked(false);
-        onLike(wordCard.id, -1);
+        updateLike(wordCard.id, -1);
       } else {
         setHasLiked(true);
-        onLike(wordCard.id, 1);
+        updateLike(wordCard.id, 1);
       }
     } catch (error) {
       console.log(error);
