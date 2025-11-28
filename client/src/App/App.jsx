@@ -35,7 +35,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/main" element={<MainPage user={user} />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/category/:category" element={<CategoryPage user={user} />} />
           <Route path="/account/:id" element={<AccountPage />} />
           <Route path="/signUp" element={<SignUpPage setUser={setUser} />} />
           <Route path="/signIn" element={<SignInPage setUser={setUser}/>} />
