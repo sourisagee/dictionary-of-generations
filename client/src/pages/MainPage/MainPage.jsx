@@ -25,7 +25,7 @@ export default function MainPage({ user }) {
   const updateLike = async (wordId, change) => {
     setWordCards((prev) =>
       prev.map((wordCard) =>
-        wordCards.id === wordCards.id
+        wordCard.id === wordId
           ? { ...wordCard, like: wordCard.like + change }
           : wordCard,
       ),
