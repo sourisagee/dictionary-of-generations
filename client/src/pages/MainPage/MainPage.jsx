@@ -6,8 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Card, Form } from 'react-bootstrap';
 
-export default function MainPage({ user }) {
-  const [wordCards, setWordCards] = useState([]);
+export default function MainPage({ user, wordCards, setWordCards, updateLike  }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -22,14 +21,6 @@ export default function MainPage({ user }) {
 
     loadWordCards();
   }, []);
-
-  const updateLike = (wordId, change) => {
-    setWordCards((prev) =>
-      prev.map((wordCard) =>
-        wordCard.id === wordId ? { ...wordCard, like: wordCard.like + change } : wordCard,
-      ),
-    );
-  };
 
   const filteredWordCards = [...wordCards].filter(
     (wordCard) =>
@@ -90,7 +81,7 @@ export default function MainPage({ user }) {
             {sortedWordCards.map((wordCard) => {
               return (
                 <Col key={wordCard.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                  <WordCard wordCard={wordCard} user={user} onLike={updateLike} />
+                  <WordCard wordCard={wordCard} user={user} updateLike={updateLike} />
                 </Col>
               );
             })}

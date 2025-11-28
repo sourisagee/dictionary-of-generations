@@ -9,9 +9,11 @@ import SignUpPage from '../pages/SignUpPage/SignUpPage';
 import SignInPage from '../pages/SignInPage/SignInPage';
 import SignOutPage from '../pages/SignOutPage/SignOutPage';
 import AccountPage from '../pages/AccountPage/AccountPage';
+import Footer from '../widgets/Footer/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [wordCards, setWordCards] = useState([]);
 
   const handleLogout = () => {
     setUser(null);
@@ -27,19 +29,41 @@ function App() {
       .catch((error) => console.log(error));
   }, []);
 
+  const updateLike = (wordId, change) => {
+    setWordCards((prev) =>
+      prev.map((wordCard) =>
+        wordCard.id === wordId ? { ...wordCard, like: wordCard.like + change } : wordCard,
+      ),
+    );
+  };
+
   return (
     <>
       <BrowserRouter>
         <NavBar user={user} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/main" element={<MainPage user={user} />} />
-          <Route path="/category/:category" element={<CategoryPage user={user} />} />
-          <Route path="/account/:id" element={<AccountPage user={user}/>} />
+          <Route
+            path="/main"
+            element={
+              <MainPage
+                user={user}
+                wordCards={wordCards}
+                updateLike={updateLike}
+                setWordCards={setWordCards}
+              />
+            }
+          />
+          <Route
+            path="/category/:category"
+            element={<CategoryPage user={user} updateLike={updateLike} />}
+          />
+          <Route path="/account/:id" element={<AccountPage user={user} />} />
           <Route path="/signUp" element={<SignUpPage setUser={setUser} />} />
           <Route path="/signIn" element={<SignInPage setUser={setUser} />} />
           <Route path="/signOut" element={<SignOutPage setUser={setUser} />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

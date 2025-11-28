@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../shared/lib/axiosInstance';
 import WordCard from '../../components/WordCard'; // ← импортировать WordCard
 
-export default function CategoryPage({ user }) {
+export default function CategoryPage({ user, updateLike }) {
   const { category } = useParams();
-  const [words, setWords] = useState([]);
+  const [categoryWordCards, setCategoryWordCards] = useState([]);
 
   useEffect(() => {
     async function getCategoryWords() {
@@ -14,7 +14,7 @@ export default function CategoryPage({ user }) {
         const response = await axiosInstance.get(`/words/category/${category}`);
         console.log('Response data:', response.data);
 
-        setWords(response.data.data);
+        setCategoryWordCards(response.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -23,9 +23,20 @@ export default function CategoryPage({ user }) {
     getCategoryWords();
   }, [category]);
 
+  const handleLike = (wordId, change) => {
+    updateLike(wordId, change);
+
+    setCategoryWordCards((prev) =>
+      prev.map((wordCard) =>
+        wordCard.id === wordId ? { ...wordCard, like: wordCard.like + change } : wordCard,
+      ),
+    );
+  };
+
+  const sortedWordCards = [...categoryWordCards].sort((a, b) => b.like - a.like);
+
   return (
     <Container className="mt-4">
-      {/* Добавляем заголовок с названием категории */}
       <div className="mb-4 text-center">
         <h2 className="text-capitalize">
           {category === 'zoomers'
@@ -37,15 +48,19 @@ export default function CategoryPage({ user }) {
             : `Категория: ${category}`}
         </h2>
         <p className="text-muted">
-          {words.length}{' '}
-          {words.length === 1 ? 'слово' : words.length < 5 ? 'слова' : 'слов'}
+          {categoryWordCards.length}{' '}
+          {categoryWordCards.length === 1
+            ? 'слово'
+            : categoryWordCards.length < 5
+            ? 'слова'
+            : 'слов'}
         </p>
       </div>
 
       <Row className="justify-content-center">
-        {words.map((wordCard) => (
+        {sortedWordCards.map((wordCard) => (
           <Col key={wordCard.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-            <WordCard wordCard={wordCard} user={user} />
+            <WordCard wordCard={wordCard} user={user} updateLike={handleLike} />
           </Col>
         ))}
       </Row>
